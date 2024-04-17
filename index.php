@@ -1,4 +1,9 @@
 <?php
+session_start();
+
+if (isset($_POST['gallery_style'])) {
+    $_SESSION['gallery_style'] = $_POST['gallery_style'];
+}
 $start_link = $_GET['start_link'] ?? null;
 $end_link = $_GET['end_link'] ?? null;
 $start_number = $_GET['start_number'] ?? null;
@@ -518,6 +523,12 @@ $end_number = $_GET['end_number'] ?? null;
         })), $(document).ready((function() {
             1 == AutoWidth && (this.GalleryWidth = $(".Gallery").width(), this.GalleryWidth > 1920 && (galleryWidth4 = 300), this.GalleryWidth < 1920 && (galleryWidth4 = this.GalleryWidth / 5 - 20), this.GalleryWidth < 1400 && (galleryWidth4 = this.GalleryWidth / 4 - 20), this.GalleryWidth < 1024 && (galleryWidth4 = this.GalleryWidth / 3 - 20), this.GalleryWidth < 786 && (galleryWidth4 = this.GalleryWidth / 2 - 20), this.GalleryWidth < 450 && (galleryWidth4 = this.GalleryWidth / 1 - 20), $(".Gallery img").width(galleryWidth4)), "mosaic" == className && JavaScriptGallery.mosaic()
         }));
+    </script>
+    <script>
+        function changeGalleryTransition() {
+            var selectedTransition = document.querySelector('input[name="transition"]:checked').value;
+            JavaScriptGallery.setGalleryTransition(selectedTransition);
+        }
     </script>
     <style>
         * {
@@ -1258,6 +1269,51 @@ $end_number = $_GET['end_number'] ?? null;
             <input type="submit" class="pis-bar-item pis-button">
         </div>
     </form>
+    <div>
+        <h1>Select Gallery Style</h1>
+        <form method="post">
+
+            <input type="radio" name="gallery_style" value="" onchange="updateSession(this.value)" <?php if (isset($_SESSION['gallery_style']) && $_SESSION['gallery_style'] == '') {
+                                                                                                        echo 'checked';
+                                                                                                    } ?>><label for="gallery_style"> Default&nbsp</label>
+            <input type="radio" name="gallery_style" value="tiles" onchange="updateSession(this.value)" <?php if (isset($_SESSION['gallery_style']) && $_SESSION['gallery_style'] == 'tiles') {
+                                                                                                            echo 'checked';
+                                                                                                        } ?>><label for="gallery_style"> Tiles&nbsp</label>
+            <input type="radio" name="gallery_style" value="center" onchange="updateSession(this.value)" <?php if (isset($_SESSION['gallery_style']) && $_SESSION['gallery_style'] == 'center') {
+                                                                                                                echo 'checked';
+                                                                                                            } ?>><label for="gallery_style"> Center&nbsp</label>
+            <input type="radio" name="gallery_style" value="Circles" onchange="updateSession(this.value)" <?php if (isset($_SESSION['gallery_style']) && $_SESSION['gallery_style'] == 'Circles') {
+                                                                                                                echo 'checked';
+                                                                                                            } ?>><label for="gallery_style"> Circles&nbsp</label>
+            <input type="radio" name="gallery_style" value="full" onchange="updateSession(this.value)" <?php if (isset($_SESSION['gallery_style']) && $_SESSION['gallery_style'] == 'full') {
+                                                                                                            echo 'checked';
+                                                                                                        } ?>><label for="gallery_style"> Full&nbsp</label>
+            <input type="radio" name="gallery_style" value="mosaic" onchange="updateSession(this.value)" <?php if (isset($_SESSION['gallery_style']) && $_SESSION['gallery_style'] == 'mosaic') {
+                                                                                                                echo 'checked';
+                                                                                                            } ?>><label for="gallery_style"> Mosaic&nbsp</label>
+        </form>
+    </div>
+    <script>
+        function updateSession(gallery_style) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("gallery_style=" + gallery_style);
+            location.reload();
+        }
+    </script>
+    <div style="text-align: center" ;>
+        <h1>Select Gallery Transition Type:</h1>
+        <input type="radio" name="transition" value="opacity" onchange="changeGalleryTransition()" checked><label for="transition_type">Opacity&nbsp</label>
+        <input type="radio" name="transition" value="zoomin" onchange="changeGalleryTransition()"><label for="transition_type">Zoomin&nbsp</label>
+        <input type="radio" name="transition" value="slide" onchange="changeGalleryTransition()"><label for="transition_type">Slide&nbsp</label>
+        <input type="radio" name="transition" value="slideAndZoom" onchange="changeGalleryTransition()"><label for="transition_type">SlideAndZoom&nbsp</label>
+        <input type="radio" name="transition" value="slideZoom" onchange="changeGalleryTransition()"><label for="transition_type">SlideZoom&nbsp</label>
+        <input type="radio" name="transition" value="ZoominFast" onchange="changeGalleryTransition()"><label for="transition_type">ZoominFast&nbsp</label>
+        <input type="radio" name="transition" value="bounce" onchange="changeGalleryTransition()"><label for="transition_type">Bounce&nbsp</label>
+        <input type="radio" name="transition" value="puffzoom" onchange="changeGalleryTransition()"><label for="transition_type">Puffzoom&nbsp</label>
+    </div>
+
     <div style="display: flex; justify-content: center; flex-wrap: wrap; margin-left: 5%; margin-right: 5%; margin-bottom: 2%;">
         <div class="Gallery" style="margin-top: 0" ;></div>
     </div>
@@ -1275,8 +1331,8 @@ $end_number = $_GET['end_number'] ?? null;
                     break;
             }
         };
-        JavaScriptGallery.setGalleryStyle("mosaic");
-        JavaScriptGallery.setGalleryTransition("Slide");
+        JavaScriptGallery.setGalleryStyle("<?php echo $_SESSION['gallery_style']; ?>");
+        // JavaScriptGallery.setGalleryTransition("Slide");
         JavaScriptGallery.enableExtraButtons();
         JavaScriptGallery.enableAutoWidth();
 
