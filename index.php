@@ -843,6 +843,14 @@ $end_number = $_GET['end_number'] ?? null;
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
         }
 
+        .pis-bar .pis-bar-item {
+            padding: 10px 4px;
+            float: left;
+            border: none;
+            display: block;
+            outline: 0;
+        }
+
         .GallerySlide {
             width: 100%;
             height: 100%;
