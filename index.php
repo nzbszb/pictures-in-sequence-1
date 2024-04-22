@@ -1013,13 +1013,12 @@ $end_number = $_GET['end_number'] ?? null;
         }
 
         .Gallery img.center {
-            width: 30%;
-            max-width: 30%;
-            max-height: unset;
-            min-height: unset;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             margin: 10px auto;
             display: block;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 0
         }
 
