@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if (!isset($_SESSION['gallery_style'])) {
+    $_SESSION['gallery_style'] = '';
+}
 if (isset($_POST['gallery_style'])) {
     $_SESSION['gallery_style'] = $_POST['gallery_style'];
 }
@@ -1298,8 +1300,18 @@ $end_number = $_GET['end_number'] ?? null;
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        location.reload();
+                    } else {
+                        console.error('Error updating session');
+                    }
+                }
+            };
+
             xhr.send("gallery_style=" + gallery_style);
-            location.reload();
         }
     </script>
     <div style="text-align: center" ;>
