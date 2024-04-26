@@ -4737,10 +4737,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 
                     if (count === images.length) {
                         if (successfulDownloads > 0) {
+                            if (<?php echo (abs($_GET['end_number'] - $_GET['start_number'])) ?> / 70 <= 1) {
+                                partNumber = ''; // Change part number to empty string for single part download
+                            }
                             zip.generateAsync({
                                 type: 'blob'
                             }).then(function(content) {
-                                saveAs(content, `images_bundle_part_${partNumber}.zip`);
+                                saveAs(content, `images_bundle${partNumber ? '_part_' + partNumber : ''}.zip`);
                             });
                         } else {
                             console.error('No images were successfully downloaded.');
@@ -4787,7 +4790,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         // Create download buttons for each batch
         batches.forEach((batch, index) => {
             const downloadButton = document.createElement('button');
-            downloadButton.textContent = `Download Part ${index + 1}`;
+            downloadButton.textContent = `Download${batches.length > 1 ? ' Part ' + (index + 1) : ''}`;
             downloadButton.id = `download-button-${index + 1}`;
             downloadButton.onclick = function() {
                 generateZIP(batch, index + 1);
