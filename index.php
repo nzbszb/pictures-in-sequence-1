@@ -1370,7 +1370,7 @@ $end_number = $_GET['end_number'] ?? null;
         json =
             '{"Entry": { "Title": "", ' +
             '"Image": [ <?php
-                        if ($start_link != null || $end_link != null || $start_number != null || $end_number != null) {
+                        if ($start_link != null && ($end_link != null || $start_number != null || $end_number != null)) {
                             if ($end_number != null && $start_number != null) {
                                 $diff = abs($end_number - $start_number) + 2;
                             } else {
@@ -4756,7 +4756,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         // Define your images array here
         var images = [
             <?php
-            if ($start_link != null || $end_link != null || $start_number != null || $end_number != null) {
+            if ($start_link != null && ($end_link != null || $start_number != null || $end_number != null)) {
                 $start_number = $_GET['start_number'] ?? null;
                 $end_number = $_GET['end_number'] ?? null;
                 if ($end_number != null && $start_number != null) {
